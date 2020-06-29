@@ -129,6 +129,10 @@ body {
   margin: 5%;
 }
 
+.resumenFactura .resumenProductos p:first-child {
+  margin: 3% 0;
+}
+
 
 /* Página de mis facturas */
 
