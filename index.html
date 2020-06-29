@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Genera Facturas</title>
+<link rel="stylesheet" type="text/css" href="css/reset.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/spinner.css">
+<link rel="stylesheet" type="text/css" href="css/button.css">
+<script src="js/lib/angular.js"></script>
+<script src="js/lib/jspdf.js"></script>
+<script src="js/panelfirma.js"></script>
+<script src="js/productos.js"></script>
+<script src="js/lib/autotable.js"></script>
+<script>
+    let app = angular.module('facturas', []);
+    app.controller('facturasCtrl', function($scope, $http) {
+
+        $scope.resumenProductos = [];
+        $scope.arrayProductos = [];
+        $scope.cantidad = 1;
+        $scope.productos = productos;
+
+        $scope.creaFactura = function() {
+
+            // Si no hay productos no generamos la factura
+            if($scope.arrayProductos.length == 0) {
+                $scope.resultado = "Debe de añadir algún producto";
+                $scope.classResultado = "ko";
+            } else {
+                /*Recuperamos los datos seleccionados*/            
+                let canvas = document.getElementById('panelFirma');
+
+                let factura = {
+                    nomfile: getNomFile($scope.dni, $scope.nombre),
+                    dni: $scope.dni,
+                    nombre: $scope.nombre,
+                    productos: $scope.arrayProductos,
+                    firma: canvas.toDataURL('image/png'),
+                    fechaGeneracion: getFechaHora()
+                };
+
+                // Default export is a4 paper, portrait, using milimeters for units
+                let doc = new jsPDF()
+
+                doc.text('DNI: ' + factura.dni, 10, 10);
+                doc.text('Comprador: ' + factura.nombre, 10, 20);
+                doc.text('Fecha: ' + factura.fechaGeneracion, 10, 30);
+                doc.text('Firma:', 100, 10);
+                doc.addImage(factura.firma, 'PNG', 100, 10);
+
+                let columns = ["Producto", "Cantidad", "Precio Unidad", "Total"];
+                doc.autoTable(columns,factura.productos,
+                { margin:{ top: 60 }}
+                );
+                // Añadimos la imagen
+
+                let pdfFile = btoa(doc.output());
+                let data = new FormData();
+                data.append('data', pdfFile);
+
+                let request = {
+                    method: 'POST',
+                    url: 'http://localhost/scripts/save.php?name='+factura.nomfile,
+                    data: data,
+                    headers: {
+                        'Content-Type': undefined
+                    }
+                };
+
+                $http(request).then(
+                    function (response) {
+                        $scope.resultado = 'Factura guardada correctamente';
+                        $scope.classResultado = 'ok';
+                    },function (error) {
+                        $scope.resultado = 'Factura no guardada correctamente. Se ha ejecutado la descarga localmente';
+                        $scope.classResultado = 'ko';
+                        doc.save(factura.dni + '.pdf');
+                    }
+                );
+            }
+
+        } //Fin creaFactura
+
+        $scope.decrementa = function() {
+            if($scope.cantidad > 1) {
+                $scope.cantidad--;
+            }
+        }
+
+        $scope.incrementa = function() {
+            $scope.cantidad++;
+        }
+
+        $scope.addProducto = function() {
+            let productos = [];
+
+            let venta = $scope.selectedProduct;
+
+            if(($scope.selectedProduct == '' || $scope.selectedProduct == null || $scope.selectedProduct == undefined) && ($scope.producto == '' || $scope.producto == null || $scope.producto == undefined)) {
+                $scope.resultado = "Debe de seleccionar algún producto";
+                $scope.classResultado = "ko";
+            } else {
+                if(venta == '' || venta == null || venta == undefined) {
+                    // Creamos un producto manualmente
+                    venta = {
+                        nombre: $scope.producto,
+                        precio: $scope.precio
+                    };
+                } else {
+                    // Cogemos el producto del json ya que ha elegido el producto del select
+                    venta = $scope.productos.find(producto => producto.id == venta);
+                }
+
+                let cantidad = $scope.cantidad;
+                if(cantidad == '' || cantidad == null || cantidad == undefined) {
+                    cantidad = 1;
+                }
+                let total = venta.precio * cantidad;
+
+                // Añadimos los datos al array
+                productos.push(venta.nombre);
+                productos.push(cantidad);
+                productos.push(venta.precio);
+                productos.push(total);
+
+
+                // Y lo añadimos al array de productos
+                $scope.arrayProductos.push(productos);
+
+                // Añadimos al array de resumen
+                $scope.resumenProductos.push({
+                    nombre: venta.nombre,
+                    precio: venta.precio,
+                    cantidad: cantidad,
+                    total: total
+                });
+                // Reiniciamos valores
+                $scope.producto = '';
+                $scope.selectedProduct = '';
+                $scope.cantidad = 1;
+                $scope.precio = '';
+                $scope.resultado = "";
+                $scope.classResultado = "";
+            }
+        }
+
+        function getFechaHora() {
+
+            const fechaDate = new Date();
+
+            let mes = fechaDate.getMonth() + 1;
+            let dia = fechaDate.getDate();
+            let year = fechaDate.getFullYear();
+
+            if(mes < 10) {
+                mes = '0' + mes;
+            }
+            if(dia < 10) {
+                dia = '0' + mes;
+            }
+
+
+            let fecha = `${dia}-${mes}-${year}`;
+            
+            let horas = fechaDate.getHours();
+            let minuto = fechaDate.getMinutes();
+            let segundos = fechaDate.getSeconds();
+
+
+            if(horas < 10) {
+                horas = "0" + horas;
+            }   
+            if(minuto < 10) {
+                minuto = "0" + minuto;
+            }   
+            if(segundos < 10) {
+                segundos = "0" + segundos;
+            }   
+
+            let hora = `${horas}:${minuto}:${segundos}`;
+            return `${fecha} ${hora}`;
+        }
+
+        function getNomFile(dni, nombre) {
+
+            const fechaDate = new Date();
+
+            let mes = fechaDate.getMonth() + 1;
+            let dia = fechaDate.getDate();
+            let year = fechaDate.getFullYear();
+
+            if(mes < 10) {
+                mes = '0' + mes;
+            }
+            if(dia < 10) {
+                dia = '0' + mes;
+            }
+
+
+            let fecha = `${dia}${mes}${year}`;
+            
+            let horas = fechaDate.getHours();
+            let minuto = fechaDate.getMinutes();
+            let segundos = fechaDate.getSeconds();
+
+
+            if(horas < 10) {
+                horas = "0" + horas;
+            }   
+            if(minuto < 10) {
+                minuto = "0" + minuto;
+            }   
+            if(segundos < 10) {
+                segundos = "0" + segundos;
+            }   
+
+            let hora = `${horas}${minuto}${segundos}`;
+            return `${dni}_${nombre}_${fecha}_${hora}`;
+        }
+    });
+</script>
+<head>
+<body>
+
+    <div class="container" ng-app="facturas" ng-controller="facturasCtrl">
+        <div class="menu">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="facturas.html">Mis facturas</a></li>
+            </ul>
+        </div>
+        <div class="creaFactura">
+            <div class="factura">
+                <form name="formFactura">
+                    <p>
+                        <label for="dni">
+                            DNI: 
+                        </label>
+                        <input class="typeText" name="dni" type="text" ng-model="dni" placeholder="DNI comprador">
+                    </p>
+                    <p>
+                        <label for="comprador">
+                            Comprador: 
+                        </label>
+                        <input class="typeText" name="comprador" type="text" ng-model="nombre" placeholder="Nombre comprador">
+                    </p>
+                    <div class="horizontalLine"></div>
+                    <p>
+                        <label for="producto">
+                            Producto
+                        </label>
+                        <select ng-model="selectedProduct">
+                            <option value="{{x.id}}" ng-repeat="x in productos">{{x.nombre}}</option>
+                        </select>
+                    </p>
+                    <div class="horizontalLine"></div>
+                    <p>
+                        <label for="producto">
+                            Producto
+                        </label>
+                        <input class="typeText" name="producto" type="text" ng-model="producto" placeholder="Producto vendido">
+                        <input class="typeText" name="precioProd" type="text" ng-model="precio" placeholder="Precio vendido">
+                    </p>
+                    <p>
+                        <label>Cantidad</label>
+                        <span class="stepper">
+                            <button ng-click="decrementa()">–</button>
+                            <input type="number" id="stepper" ng-model="cantidad" min="1">
+                            <button ng-click="incrementa()">+</button>
+                        </span>
+                    </p>
+                    <p><button class="button" ng-click="addProducto()">Añadir Producto</button></p>
+                    <div class="horizontalLine"></div>
+                    <p>Firma comprador</p>
+                    <canvas id="panelFirma" class="sign"></canvas>
+                    <p class="botonera">
+                        <button class="button" id="borrador">Borrar firma</button>
+                        <button class="button" ng-click="creaFactura()">Crear Factura</button>
+                    </p>
+                    <p class="{{classResultado}}">{{resultado}}</p>
+                </form>
+            </div>
+            <div class="verticalLine"></div>
+            <div class="resumenFactura">
+                <h2>Resumen de Factura</h2>
+                <div class="compradorDatos">
+                    <p>Datos del Comprador</p>
+                    <p>DNI: <span class="data">{{dni}}</span></p>
+                    <p>Nombre: <span class="data">{{nombre}}</span></p>
+                </div>
+                <div class="resumenProductos">
+                    <p>Produtos</p>
+                    <div ng-repeat="item in resumenProductos">
+                        <p>Producto: {{item.nombre}}</p>
+                        <p>Precio por unidad: {{item.precio}}</p>
+                        <p>Cantidad: {{item.cantidad}}</p>
+                        <p>Total: {{item.total}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script>
+    prepareCanvas();
+</script>
+
+</body>
+</html>

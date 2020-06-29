@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Lista Facturas</title>
+<link rel="stylesheet" type="text/css" href="css/reset.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<script src="js/lib/angular.js"></script>
+<script src="js/lib/jspdf.js"></script>
+<script src="js/panelfirma.js"></script>
+<script>
+    let app = angular.module('facturas', []);
+
+    app.controller('facturasCtrl', function($scope, $http) {
+        let request = {
+            method: 'GET',
+            url: 'http://localhost/scripts/listado.php',
+            headers: {
+                'Content-Type': undefined
+            }
+        };
+
+        $http(request).then(
+            function (response) {
+                let res = response.data;
+                res = "[" + res.substring(0,res.length - 1) + "]";
+                res = JSON.parse(res);
+                $scope.listFacturas = creaLista(res);
+            },function (error) {
+                console.error(error);
+            }
+        );
+
+        function getDate(file) {
+
+            let result = file.split('_');
+
+            let dni = result[0];
+            let name = result[1];
+            let fecha = result[2];
+            let hora = result[3];
+
+            fecha = fecha.substr(0,2) + '-' + fecha.substr(2,2) + '-' + fecha.substr(4,4);
+            hora = hora.substr(0,2) + ':' + hora.substr(2,2) + ':' + hora.substr(4,2);
+
+            return {
+                dni: dni,
+                name: name,
+                fecha: fecha,
+                hora: hora
+            }
+        }
+        function creaLista(res) {
+            let listaFacturas = [];
+
+            for(let i = 0; i < res.length; i++) {
+                let object = res[i];
+
+                let datos = getDate(object.file);
+
+                let factura = {
+                    folder: object.folder,
+                    file: object.file,
+                    date: datos.fecha,
+                    hour: datos.hora,
+                    dni: datos.dni,
+                    cliente: datos.name
+                };
+
+                listaFacturas.push(factura);
+            }
+            return listaFacturas;
+        }
+    });
+</script>
+<head>
+<body>
+
+    <div class="container" ng-app="facturas" ng-controller="facturasCtrl">
+        <div class="menu">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="facturas.html">Mis facturas</a></li>
+            </ul>
+        </div>
+        <div class="facturas" ng-if = 'listFacturas == undefined'>
+            <p class="noData">No es posible cargar las facturas</p>
+        </div>
+        <div class="facturas" ng-if = 'listFacturas.length == 0'>
+            <p class="noData">No tienes facturas guardadas</p>
+        </div>
+        <div class="facturas" ng-if = 'listFacturas.length > 0'>
+            <div class="listFacturas">
+                <table>
+                    <caption>Listado de Facturas</caption>
+                    <tr>
+                        <th>Nombre cliente</th>
+                        <th>Identificacion</th>
+                        <th>Fecha de creacion de la factura</th>
+                        <th>Descarga</th>
+                    </tr>
+                    <tr ng-repeat="x in listFacturas">
+                        <td>{{x.cliente}}</td>
+                        <td>{{x.dni}}</td>
+                        <td>{{x.date}} {{x.hour}}</td>
+                        <td>                            
+                            <a href="http://localhost/{{x.folder}}{{x.file}}">
+                                <img class="pdfimg" src="img/pdf.png" alt="Descargar">
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
