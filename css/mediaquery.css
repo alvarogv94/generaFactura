@@ -24,6 +24,9 @@ body {
     width: 100%;
   }
   
+  /* Menu */
+.menuIcon {display: none;}
+
   .menu {
     width: 10vw;
     height: 100vh;
@@ -45,6 +48,8 @@ body {
     text-decoration: none;
     font-size: 1.3em;
   }
+
+  /* index*/
   .creaFactura {
     margin: 2vw;
     position: relative;
@@ -198,8 +203,10 @@ body {
     ##Screen = B/w 768px to 1024px
   */
   
-  @media (min-width: 768px) and (max-width: 1024px) {
-        
+  @media (min-width: 768px) and (max-width: 1160px) {
+    .menuIcon {
+        width: 5vw;
+    }
   }
   
   /* 
@@ -209,7 +216,6 @@ body {
   
   @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
     
-    
   }
   
   /* 
@@ -218,7 +224,9 @@ body {
   */
   
   @media (min-width: 481px) and (max-width: 767px) {
-        
+    .menuIcon {
+        width: 5vw;
+    }
   }
   
   /* 
@@ -227,5 +235,7 @@ body {
   */
   
   @media (min-width: 320px) and (max-width: 480px) {
-        
+    .menuIcon {
+        width: 5vw;
+    }
   }
