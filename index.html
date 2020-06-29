@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Genera Facturas</title>
 <link rel="stylesheet" type="text/css" href="css/reset.css">
-<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/mediaquery.css">
 <link rel="stylesheet" type="text/css" href="css/spinner.css">
 <link rel="stylesheet" type="text/css" href="css/button.css">
 <script src="js/lib/angular.js"></script>
@@ -237,13 +237,13 @@
                         <label for="dni">
                             DNI: 
                         </label>
-                        <input class="typeText" name="dni" type="text" ng-model="dni" placeholder="DNI comprador">
+                        <input class="typeText" name="dni" type="text" ng-model="dni" placeholder="01234567A">
                     </p>
                     <p>
                         <label for="comprador">
                             Comprador: 
                         </label>
-                        <input class="typeText" name="comprador" type="text" ng-model="nombre" placeholder="Nombre comprador">
+                        <input class="typeText" name="comprador" type="text" ng-model="nombre" placeholder="Fernando">
                     </p>
                     <div class="horizontalLine"></div>
                     <p>
@@ -260,7 +260,7 @@
                             Producto
                         </label>
                         <input class="typeText" name="producto" type="text" ng-model="producto" placeholder="Producto vendido">
-                        <input class="typeText" name="precioProd" type="text" ng-model="precio" placeholder="Precio vendido">
+                        <input class="typeText" name="precioProd" type="text" ng-model="precio" placeholder="3.12">
                     </p>
                     <p>
                         <label>Cantidad</label>

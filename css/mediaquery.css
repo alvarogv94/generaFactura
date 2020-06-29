@@ -1,0 +1,231 @@
+/* 
+  ##Device = Desktops
+  ##Screen = 1160px to higher resolution desktops
+*/
+
+@media (min-width: 1160px) {
+
+/* Global*/
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    min-width: 1160px;
+  }
+  
+  .ok {
+    color: green;
+  }
+  
+  .ko {
+    color: red;
+  }
+  
+  .container {
+    display: inline-flex;
+    width: 100%;
+  }
+  
+  .menu {
+    width: 10vw;
+    height: 100vh;
+    min-width: 165px;
+    background-color: #408c99;
+  }
+  
+  .menu ul {
+    margin: 1vw;
+  }
+  
+  .menu li {
+    margin: 1vw 0;
+  }
+  
+  .menu li a {
+    margin: 0.5vw;
+    color: white;
+    text-decoration: none;
+    font-size: 1.3em;
+  }
+  .creaFactura {
+    margin: 2vw;
+    position: relative;
+    display: inline-flex;
+    width: 100vw;
+    min-width: 1160px;
+  }
+  
+  .creaFactura .factura form p {
+    display: flex;
+    margin: 1vw;
+    width: 100%;
+  }
+  
+  
+  .creaFactura .factura form label {
+    width: 100px;
+    display: block;
+    line-height: 40px;
+    height: 25px;
+  }
+  
+  .typeText {
+    border-radius: 5px;
+    border: 1px solid grey;
+    padding: 10px;
+    margin-right: 25px;
+    width: 25%;
+  }
+  
+  .creaFactura .factura form select {
+    width: 28.5%;
+    height: 35px;
+    border-radius: 4px;
+  }
+  
+  
+  .creaFactura .factura form input:focus {
+    border: 2px solid #408c99;
+  }
+  
+  .factura {
+    width: 45%;
+  }
+  
+  .sign {
+    width: 300px;
+    height: 150px;
+    border: 1px solid #d3d3d3;
+    position: relative;
+    margin-left: 3%;
+  }
+  
+  .verticalLine {
+    height: 100%;
+    width: 3px;
+    background-color: #408c99;
+  }
+  
+  .horizontalLine {
+    width: 100%;
+    height: 3px;
+    background-color: #408c99;  
+  }
+  
+  .creaFactura div {
+    margin: 0 3%;
+  }
+  
+  .resumenFactura {
+    width: 45%;
+  }
+  
+  .resumenFactura h2{
+    text-align: center;
+    margin: 5% 0;
+    font-weight: bold;
+  }
+  
+  .resumenFactura .data {
+    font-weight: bold;
+  }
+  
+  
+  .resumenFactura .compradorDatos p:first-child, .resumenFactura .resumenProductos p:first-child  {
+    font-weight: bold;
+  }
+  .resumenFactura .compradorDatos p:not(:first-child), .resumenFactura .resumenProductos p:not(:first-child) {
+    margin: 5%;
+  }
+  
+  .resumenFactura .resumenProductos p:first-child {
+    margin: 3% 0;
+  }
+  
+  
+  /* Página de mis facturas */
+  
+  table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  table caption {
+    font-size: 1.3em;
+    margin: 2% 0 3% 0;
+  }
+  
+  table td {
+    vertical-align : middle;
+  }
+  
+  table td, table th {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 15px;
+  }
+  
+  table tr:nth-child(even){background-color: #f2f2f2;}
+  
+  table tr:hover {background-color: #ddd;}
+  
+  table th {
+    padding: 12px 12px 12px 12px;
+    background-color: #408c99;
+    color: white;
+    width: 320px;
+  }
+  .facturas {
+    width: 100%;
+  }
+  
+  .listFacturas {
+    width: 80%;
+    margin: 0 auto;
+  }
+  
+  .pdfimg {
+    width: 10%;
+  }
+  
+  .noData {
+    margin: 2%;
+  }
+
+}
+
+  /* 
+    ##Device = Tablets, Ipads (portrait)
+    ##Screen = B/w 768px to 1024px
+  */
+  
+  @media (min-width: 768px) and (max-width: 1024px) {
+        
+  }
+  
+  /* 
+    ##Device = Tablets, Ipads (landscape)
+    ##Screen = B/w 768px to 1024px
+  */
+  
+  @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    
+    
+  }
+  
+  /* 
+    ##Device = Low Resolution Tablets, Mobiles (Landscape)
+    ##Screen = B/w 481px to 767px
+  */
+  
+  @media (min-width: 481px) and (max-width: 767px) {
+        
+  }
+  
+  /* 
+    ##Device = Most of the Smartphones Mobiles (Portrait)
+    ##Screen = B/w 320px to 479px
+  */
+  
+  @media (min-width: 320px) and (max-width: 480px) {
+        
+  }
