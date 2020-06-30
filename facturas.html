@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1">
 <title>Lista Facturas</title>
 <link rel="stylesheet" type="text/css" href="css/reset.css">
 <link rel="stylesheet" type="text/css" href="css/mediaquery.css">
@@ -12,6 +13,22 @@
     let app = angular.module('facturas', []);
 
     app.controller('facturasCtrl', function($scope, $http) {
+
+        $scope.muestraMenu = function() {
+            let nodo = document.getElementsByClassName("menu")[0];
+            let clase = nodo.className;
+
+            if(clase.includes("menuOculto") == true) {
+                nodo.classList.remove("menuOculto");
+                nodo.classList.add("menuMuestra");
+            } else if(clase.includes("menuMuestra") == true) {
+                nodo.classList.remove("menuMuestra");
+                nodo.classList.add("menuOculto");
+            }            
+        }
+
+
+
         let request = {
             method: 'GET',
             url: 'http://localhost/scripts/listado.php',
@@ -77,8 +94,10 @@
 <body>
 
     <div class="container" ng-app="facturas" ng-controller="facturasCtrl">
-        <div class="menu">
-            <img src="img/menu.png">
+        <div class="menuIcon">
+            <img src="img/menu.png" ng-click="muestraMenu()">
+        </div>
+        <div class="menu menuOculto">
             <ul>
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="facturas.html">Mis facturas</a></li>
