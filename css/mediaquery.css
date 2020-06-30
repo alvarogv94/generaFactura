@@ -109,6 +109,43 @@ table th {
   height: 25px;
 }
 
+.resumenFactura {
+  width: 45%;
+}
+
+.resumenFactura h2{
+  text-align: center;
+  margin: 5% 0;
+  font-weight: bold;
+}
+
+.resumenFactura .data {
+  font-weight: bold;
+}
+
+
+.resumenFactura .compradorDatos p:first-child, .resumenFactura .resumenProductos p:first-child  {
+  font-weight: bold;
+}
+.resumenFactura .compradorDatos p:not(:first-child), .resumenFactura .resumenProductos p:not(:first-child) {
+  margin: 5%;
+}
+
+.resumenFactura .resumenProductos p:first-child {
+  margin: 3% 0;
+}
+
+.cajaSign {
+  position: relative;
+  margin-left: 3%;
+}
+
+.sign {
+  width: 300px;
+  height: 150px;
+  border: 1px solid #d3d3d3;
+}
+
 /* 
   ##Device = Desktops
   ##Screen = 1160px to higher resolution desktops
@@ -132,6 +169,7 @@ table th {
     width: 10vw;
     height: 100vh;
     min-width: 165px;
+    z-index: 1;
     background-color: #408c99;
   }
 
@@ -162,13 +200,6 @@ table th {
     width: 45%;
   }
 
-  .sign {
-    width: 300px;
-    height: 150px;
-    border: 1px solid #d3d3d3;
-    position: relative;
-    margin-left: 3%;
-  }
 
   .verticalLine {
     height: 100%;
@@ -184,32 +215,6 @@ table th {
 
   .creaFactura div {
     margin: 0 3%;
-  }
-
-  .resumenFactura {
-    width: 45%;
-  }
-
-  .resumenFactura h2{
-    text-align: center;
-    margin: 5% 0;
-    font-weight: bold;
-  }
-
-  .resumenFactura .data {
-    font-weight: bold;
-  }
-
-
-  .resumenFactura .compradorDatos p:first-child, .resumenFactura .resumenProductos p:first-child  {
-    font-weight: bold;
-  }
-  .resumenFactura .compradorDatos p:not(:first-child), .resumenFactura .resumenProductos p:not(:first-child) {
-    margin: 5%;
-  }
-
-  .resumenFactura .resumenProductos p:first-child {
-    margin: 3% 0;
   }
 
 
@@ -235,6 +240,7 @@ table th {
       height: 100vh;
       background-color: #408c99;
       position: absolute;
+      z-index: 1;
     }
 
     .menuOculto {
@@ -260,6 +266,9 @@ table th {
       margin: 5px;
     }
 
+    .creaFactura {
+      padding: 2%;
+    }
 
   }
   
@@ -279,6 +288,7 @@ table th {
       height: 100vh;
       background-color: #408c99;
       position: absolute;
+      z-index: 1;
     }
 
     .menuOculto {
@@ -307,6 +317,11 @@ table th {
       width: 4vw;
       margin: 5px;
     }
+
+    .creaFactura {
+      padding: 2%;
+    }
+
   }
   
   /* 
@@ -325,6 +340,7 @@ table th {
       height: 100vh;
       background-color: #408c99;
       position: absolute;
+      z-index: 1;
     }
 
     .menuOculto {
@@ -349,6 +365,10 @@ table th {
       width: 4vw;
       margin: 5px;
     }
+
+    .creaFactura {
+      padding: 2%;
+    }
   }
   
   /* 
@@ -367,6 +387,7 @@ table th {
       height: 100vh;
       background-color: #408c99;
       position: absolute;
+      z-index: 1;
     }
     
 
@@ -391,5 +412,9 @@ table th {
     .menuIcon img {
       width: 4vw;
       margin: 5px;
+    }
+
+    .creaFactura {
+      padding: 2%;
     }
   }
