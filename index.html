@@ -41,7 +41,15 @@
             if($scope.arrayProductos.length == 0) {
                 $scope.resultado = "Debe de añadir algún producto";
                 $scope.classResultado = "ko";
+            } else if($scope.dni == null || $scope.dni == '') {
+                $scope.resultado = "Debe de informar al menos el dni.";
+                $scope.classResultado = "ko";
             } else {
+
+                if($scope.nombre == null || $scope.nombre == '') {
+                    $scope.nombre = 'SinNombre';
+                }
+
                 /*Recuperamos los datos seleccionados*/            
                 let canvas = document.getElementById('panelFirma');
 
@@ -104,6 +112,10 @@
 
         $scope.incrementa = function() {
             $scope.cantidad++;
+        }
+
+        $scope.getTotalFactura = function() {
+            return 0;
         }
 
         $scope.addProducto = function() {
@@ -208,7 +220,7 @@
                 mes = '0' + mes;
             }
             if(dia < 10) {
-                dia = '0' + mes;
+                dia = '0' + dia;
             }
 
 
@@ -262,6 +274,7 @@
                         <input class="typeText" name="comprador" type="text" ng-model="nombre" placeholder="Fernando">
                     </p>
                     <div class="horizontalLine"></div>
+                    <p class="moreInfo">Si eliges un producto en la lista, y añades uno manualmente, prevalecerá el producto de la lista</p>
                     <p>
                         <label for="producto">
                             Producto
@@ -271,6 +284,7 @@
                         </select>
                     </p>
                     <div class="horizontalLine"></div>
+                    <p class="moreInfo">Puedes añadir un producto manualmente si no está en tu lista.</p>
                     <p>
                         <label for="producto">
                             Producto
@@ -304,8 +318,8 @@
                 <h2>Resumen de Factura</h2>
                 <div class="compradorDatos">
                     <p>Datos del Comprador</p>
-                    <p>DNI: <span class="data">{{dni}}</span></p>
-                    <p>Nombre: <span class="data">{{nombre}}</span></p>
+                    <p>DNI: <span ng-if="dni != null" class="data">{{dni}}</span><span ng-if="dni == null || dni == ''" class="data">No informado</span></p>
+                    <p>Nombre: <span ng-if="nombre != null" class="data">{{nombre}}</span><span ng-if="nombre == null || nombre == ''" class="data">No informado</span></p>
                 </div>
                 <div class="resumenProductos">
                     <p>Produtos</p>
@@ -316,6 +330,7 @@
                         <p>Total: {{item.total}}</p>
                     </div>
                 </div>
+                <p class="total">Total {{ getTotalFactura() }}</p>
             </div>
         </div>
     </div>

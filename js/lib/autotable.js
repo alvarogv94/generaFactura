@@ -880,7 +880,6 @@ var Table = (function () {
             columnStyles: {}
         };
         this.doc = doc;
-        console.log(doc.internal.getFontSize());
         this.userStyles = {
             textColor: 30,
             fontSize: doc.internal.getFontSize(),
